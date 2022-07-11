@@ -16,6 +16,7 @@ class Phoneboock extends Component {
     ],
     filter: '',
   };
+
   formSubmit = data => {
     const { contacts } = this.state;
 
@@ -48,6 +49,18 @@ class Phoneboock extends Component {
       contact.name.toLowerCase().includes(inLowerCase)
     );
   };
+  componentDidMount() {
+    const contact = localStorage.getItem('contacts');
+    const parsedContact = JSON.parse(contact);
+    if (parsedContact) {
+      this.setState({ contacts: parsedContact });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
   render() {
     const filteredContacts = this.getVisibleContacts();
 
